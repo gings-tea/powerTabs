@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Tab from "./components/Tab";
+import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <React.StrictMode>
-    <Tab initialActive={0}>
-      <Tab.Pane title="some nice title">testing the pane</Tab.Pane>
-      <Tab.Pane title="some nice title 2">testing the pane 2</Tab.Pane>
-    </Tab>
+    <App />
   </React.StrictMode>
 );
 

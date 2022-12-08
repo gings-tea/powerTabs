@@ -7,13 +7,13 @@ interface TabCommonProps {
   children: React.ReactElement<TabPaneProps>[];
 }
 
-export interface TabUncotrolledProps extends TabCommonProps {
+interface TabUncotrolledProps extends TabCommonProps {
   initialActive: number;
   active?: never;
   onActiveChange?: never;
 }
 
-export interface TabControlledProps extends TabCommonProps {
+interface TabControlledProps extends TabCommonProps {
   active: number;
   onActiveChange: Function;
   initialActive?: never;
@@ -29,16 +29,27 @@ export type TabPaneProps = {
 };
 
 function Tab(props: TabProps): JSX.Element {
-  const { children } = props;
-  const a = "initialActive" in props ? props.initialActive : props.active;
-  const [activePaneIndex, setActivePaneIndex] = useState(a);
+  const { children, initialActive, active } = props;
+
+  const isUncontrolled = "initialActive" in props;
+  const [paneIndexState, setPaneIndexState] = useState(
+    isUncontrolled ? initialActive : null
+  );
+  const selectedPaneIndex = isUncontrolled ? paneIndexState : active;
+
+  function onTitleClick(index: number) {
+    return isUncontrolled
+      ? setPaneIndexState(index)
+      : props.onActiveChange(index);
+  }
+
   return (
     <div className="tab-container">
       {children.map((child, index) =>
         React.cloneElement(child, {
-          showContent: index === activePaneIndex,
+          showContent: index === selectedPaneIndex,
           key: index,
-          onTitleClick: () => setActivePaneIndex(index),
+          onTitleClick: () => onTitleClick(index),
         })
       )}
     </div>
