@@ -1,0 +1,9 @@
+.tab-container {
+  display: flex;
+  .tab-pane-container {
+    padding: 12px;
+    h1 {
+      font-size: medium;
+    }
+  }
+}
