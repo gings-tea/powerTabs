@@ -15,7 +15,7 @@ interface TabUncotrolledProps extends TabCommonProps {
 
 interface TabControlledProps extends TabCommonProps {
   active: number;
-  onActiveChange: Function;
+  onActiveChange: (index: number) => void;
   initialActive?: never;
 }
 
