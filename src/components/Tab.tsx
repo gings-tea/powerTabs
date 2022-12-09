@@ -38,7 +38,7 @@ function Tab(props: TabProps): JSX.Element {
   );
   const selectedPaneIndex = isUncontrolled ? paneIndexState : active;
 
-  function onTitleClick(index: number) {
+  function handleTitleClick(index: number) {
     return isUncontrolled
       ? setPaneIndexState(index)
       : props.onActiveChange(index);
@@ -50,7 +50,7 @@ function Tab(props: TabProps): JSX.Element {
         React.cloneElement(child, {
           showContent: index === selectedPaneIndex,
           key: index,
-          onTitleClick: () => onTitleClick(index),
+          onTitleClick: () => handleTitleClick(index),
         })
       )}
     </div>
