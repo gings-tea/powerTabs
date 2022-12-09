@@ -32,6 +32,7 @@ function Tab(props: TabProps): JSX.Element {
   const { children, initialActive, active } = props;
 
   const isUncontrolled = "initialActive" in props;
+
   const [paneIndexState, setPaneIndexState] = useState(
     isUncontrolled ? initialActive : null
   );
@@ -65,7 +66,11 @@ function TabPane(props: TabPaneProps): JSX.Element {
   } = props;
 
   function renderTitle(): JSX.Element {
-    return <h1 onClick={onTitleClick}>{title}</h1>;
+    return (
+      <button role="tab" onClick={onTitleClick}>
+        {title}
+      </button>
+    );
   }
   return (
     <div className="tab-pane-container">

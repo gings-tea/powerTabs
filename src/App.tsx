@@ -9,13 +9,13 @@ function App(): JSX.Element {
   }
   return (
     <div>
-      <h1>Uncontrolled</h1>
+      <h2>Uncontrolled</h2>
       <Tab initialActive={0}>
         <Tab.Pane title="A">First Pane Body</Tab.Pane>
         <Tab.Pane title="B">Second Pane Body</Tab.Pane>
       </Tab>
 
-      <h1>Controlled</h1>
+      <h2>Controlled</h2>
       <Tab active={active} onActiveChange={onActiveChange}>
         <Tab.Pane title="A">First Pane Body</Tab.Pane>
         <Tab.Pane title="B">Second Pane Body</Tab.Pane>

@@ -20,7 +20,7 @@ describe("Tab.Pane", () => {
 
     render(component);
 
-    expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: title })).toBeInTheDocument();
   });
 
   it("does not render content when show content is false", () => {
@@ -48,7 +48,7 @@ describe("Tab.Pane", () => {
 
     render(component);
 
-    const titleButton = screen.getByRole("heading", { name: title });
+    const titleButton = screen.getByRole("tab", { name: title });
 
     userEvent.click(titleButton);
 
@@ -57,31 +57,97 @@ describe("Tab.Pane", () => {
 });
 
 describe("Tab", () => {
-  it("renders initial pane 0 as active", () => {
-    const component = (
-      <Tab initialActive={0}>
-        <Tab.Pane title="1">first child</Tab.Pane>
-        <Tab.Pane title="2">second child</Tab.Pane>
-      </Tab>
-    );
+  describe("uncontrolled", () => {
+    it("renders initial pane 0 as active", () => {
+      const component = (
+        <Tab initialActive={0}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
 
-    render(component);
+      render(component);
 
-    expect(screen.getByText("first child")).toBeInTheDocument();
-    expect(screen.queryByText("second child")).not.toBeInTheDocument();
+      expect(screen.getByText("first child")).toBeInTheDocument();
+      expect(screen.queryByText("second child")).not.toBeInTheDocument();
+    });
+
+    it("renders initial pane 1 as active", () => {
+      const component = (
+        <Tab initialActive={1}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
+
+      render(component);
+
+      expect(screen.queryByText("first child")).not.toBeInTheDocument();
+      expect(screen.getByText("second child")).toBeInTheDocument();
+    });
+
+    it("shows second pane when title 2 clicked", () => {
+      const component = (
+        <Tab initialActive={0}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
+
+      render(component);
+
+      const title2 = screen.getByRole("tab", { name: "2" });
+      userEvent.click(title2);
+
+      expect(screen.getByText("second child")).toBeInTheDocument();
+    });
   });
 
-  it("renders initial pane 1 as active", () => {
-    const component = (
-      <Tab initialActive={1}>
-        <Tab.Pane title="1">first child</Tab.Pane>
-        <Tab.Pane title="2">second child</Tab.Pane>
-      </Tab>
-    );
+  describe("controlled", () => {
+    const mockOnActiveChange = jest.fn();
+    it("renders active 0 pane", () => {
+      const component = (
+        <Tab active={0} onActiveChange={mockOnActiveChange}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
 
-    render(component);
+      render(component);
 
-    expect(screen.queryByText("first child")).not.toBeInTheDocument();
-    expect(screen.getByText("second child")).toBeInTheDocument();
+      expect(screen.getByText("first child")).toBeInTheDocument();
+      expect(screen.queryByText("second child")).not.toBeInTheDocument();
+    });
+
+    it("renders active 1 pane", () => {
+      const component = (
+        <Tab active={1} onActiveChange={mockOnActiveChange}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
+
+      render(component);
+
+      expect(screen.queryByText("first child")).not.toBeInTheDocument();
+      expect(screen.getByText("second child")).toBeInTheDocument();
+    });
+
+    it("calls onActiveChange callback with tab index", () => {
+      const component = (
+        <Tab active={0} onActiveChange={mockOnActiveChange}>
+          <Tab.Pane title="1">first child</Tab.Pane>
+          <Tab.Pane title="2">second child</Tab.Pane>
+        </Tab>
+      );
+
+      render(component);
+
+      const title2 = screen.getByRole("tab", { name: "2" });
+      userEvent.click(title2);
+
+      expect(mockOnActiveChange).toHaveBeenCalledTimes(1);
+      expect(mockOnActiveChange).toHaveBeenCalledWith(1);
+    });
   });
 });
