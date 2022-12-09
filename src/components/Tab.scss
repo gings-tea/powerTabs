@@ -2,5 +2,7 @@
   display: flex;
   .tab-pane-container {
     padding: 12px;
+    display: flex;
+    flex-direction: column;
   }
 }
